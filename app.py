@@ -69,7 +69,7 @@ class FertilizerInput(BaseModel):
 def read_root():
     return {"message": "Welcome to the Fertilizer Recommendation API!"}
 
-@app.get("/categories", summary="Get Soil and Crop Types", tags=["Categories")
+@app.get("/categories", summary="Get Soil and Crop Types", tags=["Categories"])
 def get_categories():
     return {
         "soil_types": [{"id": v, "name": k} for k, v in backend_mappings['soil_type_map'].items()],
