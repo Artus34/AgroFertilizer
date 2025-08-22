@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 import numpy as np
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # --- 1. Initialize FastAPI App ---
@@ -9,6 +10,15 @@ app = FastAPI(
     title="Fertilizer Recommendation API",
     description="An API to recommend fertilizer based on soil and crop data.",
     version="1.0.0"
+)
+
+# ➡️ Add this CORS middleware block
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- 2. Load Saved Artifacts ---
@@ -59,7 +69,7 @@ class FertilizerInput(BaseModel):
 def read_root():
     return {"message": "Welcome to the Fertilizer Recommendation API!"}
 
-@app.get("/categories", summary="Get Soil and Crop Types", tags=["Categories"])
+@app.get("/categories", summary="Get Soil and Crop Types", tags=["Categories")
 def get_categories():
     return {
         "soil_types": [{"id": v, "name": k} for k, v in backend_mappings['soil_type_map'].items()],
@@ -96,7 +106,7 @@ def recommend_fertilizer(data: FertilizerInput):
         recommendation = reverse_fertilizer_map.get(predicted_fertilizer_num)
         
         if not recommendation:
-             raise HTTPException(status_code=500, detail="Could not map prediction to a fertilizer name.")
+            raise HTTPException(status_code=500, detail="Could not map prediction to a fertilizer name.")
 
         return {"recommended_fertilizer": recommendation}
     except HTTPException as e:
